@@ -1,5 +1,6 @@
 package com.safetynet.alerts.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,27 @@ public class PersonService {
 		return personRepository.findById(id);
 	}
 	
-	public Iterable<Person> getPersons() {
-		return personRepository.findAll();
+	public List<Person> getPersons() {
+		return (List<Person>) personRepository.findAll();
 	}
-	
+		
 	public Person savePerson(Person person) {
-		Person savePerson = personRepository.save(person);
-		return savePerson;
+		Person savedPerson = personRepository.save(person);
+		return savedPerson;
 	}
-	
-	public void deletePerson(final int id) {
+		
+	public void deletePerson(final String firstname, final String lastname) {
+		int id = 0;
+		List<Person> persons = getPersons();
+		
+		for (Person person : persons) {
+			if(person.getFirstName().equals(firstname) 
+					&& person.getLastName().equals(lastname)) {
+				id = person.getId();
+			}
+		}
+		
 		personRepository.deleteById(id);
 	}
+	
 }

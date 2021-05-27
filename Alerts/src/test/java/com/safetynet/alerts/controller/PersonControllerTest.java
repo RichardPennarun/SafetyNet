@@ -21,6 +21,22 @@ public class PersonControllerTest {
 	@Mock
 	PersonService personService;
 	
+	
+
+	
+	
+	@Test
+	public void savePersonTest() {
+		Person p = new Person();
+		//when(personService.deletePerson(0)).thenReturn(1);
+		new PersonController().createPerson(p);
+		//parkingService.processIncomingVehicle();
+		//personController.deletePerson(id);
+		//verify(personRepository, Mockito.times(1)).deleteById(p.getId());
+		
+	}	
+	
+	
 	@Disabled
 	@Test
 	public void deletePerson() {
