@@ -8,7 +8,7 @@ public class Util {
 	
 	public int getAge(String birthdate) {
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		LocalDate localBirthdate = LocalDate.parse(birthdate, formatter);
         LocalDate today = LocalDate.now();
         Period age = Period.between(localBirthdate, today);

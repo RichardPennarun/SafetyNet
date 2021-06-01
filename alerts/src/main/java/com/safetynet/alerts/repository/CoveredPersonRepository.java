@@ -3,9 +3,9 @@ package com.safetynet.alerts.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.safetynet.alerts.model.CoveredResident;
+import com.safetynet.alerts.model.CoveredPerson;
 
 @Repository
-public interface CoveredResidentRepository extends CrudRepository<CoveredResident, Integer> {
+public interface CoveredPersonRepository extends CrudRepository<CoveredPerson, Integer> {
 
 }

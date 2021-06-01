@@ -30,7 +30,7 @@ public class UtilTests {
 		
 		assertThat(util.getAge("26/05/2001")).isEqualTo(20);
 		assertThat(util.getAge("27/05/2001")).isEqualTo(20);
-		assertThat(util.getAge("28/05/2001")).isEqualTo(19);
+		assertThat(util.getAge("29/05/2001")).isEqualTo(19);
 	}
 
 }
