@@ -3,6 +3,8 @@ package com.safetynet.alerts.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import com.safetynet.alerts.service.FirestationService;
 @RestController
 public class FirestationController {
 	
+	private static Logger logger = LogManager.getLogger(FirestationController.class);
+	
 	@Autowired
 	FirestationService firestationService;
 	
@@ -28,17 +32,8 @@ public class FirestationController {
 	  */
 	@GetMapping("/firestations")
 	public List<Firestation> getFirestations() {
+        logger.info("Request - Get all firestation");
 		return (List<Firestation>) firestationService.getFirestations();
-	}
-	
-	 /*
-	  * Delete a mapping
-	  * @param - address, station
-	  */
-	@DeleteMapping("/firestation")
-	public void deleteFirestationn(@RequestParam("id") final int givenId,
-			@RequestParam("station") final int station) {
-		firestationService.deleteFirestation(givenId, station);
 	}
 	
 	/*
@@ -48,6 +43,7 @@ public class FirestationController {
 	 */
 	@PostMapping("/firestation")
 	public Firestation createFirestation(@RequestBody Firestation firestation) {
+		logger.info("Request - Create firestation @RequestBody = {} ", firestation);
 		return firestationService.saveFirestation(firestation);
 	}
 	
@@ -60,6 +56,7 @@ public class FirestationController {
 	@PutMapping("/firestation/{id}")
 	public Firestation updateFirestation(@PathVariable("id") final int id, 
 			@RequestBody Firestation firestation) {
+		logger.info("Request - Update firestation @RequestBody = {} ", firestation);
 		Optional<Firestation> f = firestationService.getFirestation(id);
 		if(f.isPresent()) {
 			Firestation currentFirestation = f.get();
@@ -68,15 +65,35 @@ public class FirestationController {
 			if(address != null) {
 				currentFirestation.setAddress(address);
 			}
-			Integer station = firestation.getStation();
+			Integer station = firestation.getStationNumber();
 			if(station != null) {
-				currentFirestation.setStation(station);
+				currentFirestation.setStationNumber(station);
 			}
 			firestationService.saveFirestation(currentFirestation);
 			return currentFirestation;
 		} else {
 			return null;
 		}
+	}
+	
+	 /*
+	  * Delete a mapping by address
+	  * @param - address
+	  */
+	@DeleteMapping("/deleteAddress")
+	public void deleteMappingWithAddress(@RequestParam("address") final String address) {
+		logger.info("Request - Delete mapping for address {}", address);
+		firestationService.deleteFirestationByAddress(address);
+	}
+	
+	 /*
+	  * Delete a mapping by station
+	  * @param - station number
+	  */
+	@DeleteMapping("/deleteFirestation")
+	public void deleteMappingsWithStationNumber(@RequestParam("stationNumber") final int stationNumber) {
+		logger.info("Request - Delete all mappings for firestation number {}", stationNumber);
+		firestationService.deleteFirestationByStationNumber(stationNumber);
 	}
 
 }

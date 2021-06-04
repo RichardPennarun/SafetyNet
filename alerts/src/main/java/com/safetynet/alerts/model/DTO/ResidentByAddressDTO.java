@@ -20,7 +20,7 @@ public class ResidentByAddressDTO {
 	@JsonIgnore
 	private int id;
 	
-	private int station;
+	private int stationNumber;
 	
 	private ArrayList<Resident> residents;
 

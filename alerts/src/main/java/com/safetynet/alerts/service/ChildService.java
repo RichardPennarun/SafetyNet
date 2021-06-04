@@ -2,25 +2,22 @@ package com.safetynet.alerts.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.model.Child;
-import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonInfo;
-import com.safetynet.alerts.model.Resident;
-import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
 import com.safetynet.alerts.repository.ChildRepository;
-import com.safetynet.alerts.util.Util;
-
 import lombok.Data;
 
 @Data
 @Service
 public class ChildService {
+	
+	private static Logger logger = LogManager.getLogger(ChildService.class);
 
 	@Autowired
 	PersonService personService;
@@ -65,10 +62,8 @@ public class ChildService {
 				}
 			}
 		}
-		
-		
-		
-		
+		logger.info("Response - Children list for address " + address + ":  " + children);
+    	
 		return children;
 	}
 

@@ -3,6 +3,8 @@ package com.safetynet.alerts.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import lombok.Data;
 @Data
 @Service
 public class CoveredPersonService {
+	
+	private static Logger logger = LogManager.getLogger(CoveredPersonService.class);
 
 	@Autowired
 	PersonService personService;
@@ -49,7 +53,7 @@ public class CoveredPersonService {
 		List<Firestation> firestations = firestationService.getFirestations();
 		ArrayList<CoveredPerson> coveredPersons = new ArrayList<>();
 		for (Firestation fs : firestations) {
-			if (fs.getStation().equals(stationNumber)) {
+			if (fs.getStationNumber().equals(stationNumber)) {
 				address = fs.getAddress();
 
 				List<Person> persons = personService.getPersons();
@@ -60,6 +64,7 @@ public class CoveredPersonService {
 						coveredPerson.setFirstName(p.getFirstName());
 						coveredPerson.setLastName(p.getLastName());
 						coveredPerson.setAddress(p.getAddress());
+						coveredPerson.setCity(p.getCity());
 						coveredPerson.setPhone(p.getPhone());
 
 						List<MedicalRecord> medicalrecords = medicalRecordService.getMedicalRecords();
@@ -81,11 +86,13 @@ public class CoveredPersonService {
 
 			}
 
-			coveredPersonDTO.setStation(stationNumber);
+			coveredPersonDTO.setStationNumber(stationNumber);
 			coveredPersonDTO.setCoveredPersons(coveredPersons);
 			coveredPersonDTO.setAdults(adultcount);
-			coveredPersonDTO.setChilds(childcount);
+			coveredPersonDTO.setChildren(childcount);
 		}
+		logger.info("Response - Persons covered by station number " + stationNumber + ": " + coveredPersonDTO);
+    	
 		return coveredPersonDTO;
 	}
 

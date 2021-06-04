@@ -19,6 +19,8 @@ public class ResidentByStationDTO {
 	@JsonIgnore
 	private int id;
 	
+	private int stationNumber;
+	
 	private String address;
 	
 	private ArrayList<Resident> residents;

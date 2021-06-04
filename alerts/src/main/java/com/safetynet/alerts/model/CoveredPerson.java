@@ -21,6 +21,8 @@ public class CoveredPerson {
 	
 	private String address;
 	
+	private String city;
+	
 	private String phone;
 	
 	private int age;

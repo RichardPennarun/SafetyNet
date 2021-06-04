@@ -3,6 +3,8 @@ package com.safetynet.alerts.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import lombok.Data;
 @Data
 @Service
 public class PhoneAlertService {
+	
+	private static Logger logger = LogManager.getLogger(PhoneAlertService.class);
 	
 	@Autowired
 	PersonService personService;
@@ -29,7 +33,7 @@ public class PhoneAlertService {
 		
 		List<Firestation> firestations = firestationService.getFirestations();
 		for (Firestation firestation : firestations) {
-			if(firestation.getStation().equals(stationNumber)) {
+			if(firestation.getStationNumber().equals(stationNumber)) {
 				addressList.add(firestation.getAddress());
 			}
 		}
@@ -42,7 +46,8 @@ public class PhoneAlertService {
 				}
 			}
 		}
-		
+		logger.info("Response - Phone list for station number " + stationNumber + ":  " + personPhones);
+    	
 		return personPhones;
 	}
 	

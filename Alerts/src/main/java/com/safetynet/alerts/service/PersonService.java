@@ -3,6 +3,8 @@ package com.safetynet.alerts.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import lombok.Data;
 @Service
 public class PersonService {
 	
+
+	private static Logger logger = LogManager.getLogger(PersonService.class);
+	
 	@Autowired
 	private PersonRepository personRepository;
 	
@@ -23,11 +28,14 @@ public class PersonService {
 	}
 	
 	public List<Person> getPersons() {
-		return (List<Person>) personRepository.findAll();
+		List<Person> persons = (List<Person>) personRepository.findAll();
+		logger.info("Response - All persons:" + persons);
+		return persons;
 	}
 		
 	public Person savePerson(Person person) {
 		Person savedPerson = personRepository.save(person);
+		logger.info("Response - " + savedPerson + " saved");
 		return savedPerson;
 	}
 		
@@ -43,6 +51,7 @@ public class PersonService {
 		}
 		
 		personRepository.deleteById(id);
+		logger.info("Response - " + firstname + " " + lastname + " deleted");
 	}
 	
 }

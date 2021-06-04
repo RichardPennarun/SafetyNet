@@ -41,19 +41,19 @@ DROP TABLE IF EXISTS firestations;
 CREATE TABLE firestations(
   id INT AUTO_INCREMENT,
    address VARCHAR(35)  PRIMARY KEY NOT NULL,
-   station INTEGER  NOT NULL
+   station_number INTEGER  NOT NULL
 );
-INSERT INTO firestations(address,station) VALUES ('1509 Culver St',3);
-INSERT INTO firestations(address,station) VALUES ('29 15th St',2);
-INSERT INTO firestations(address,station) VALUES ('834 Binoc Ave',3);
-INSERT INTO firestations(address,station) VALUES ('644 Gershwin Cir',1);
-INSERT INTO firestations(address,station) VALUES ('748 Townings Dr',3);
-INSERT INTO firestations(address,station) VALUES ('489 Manchester St',4);
-INSERT INTO firestations(address,station) VALUES ('892 Downing Ct',2);
-INSERT INTO firestations(address,station) VALUES ('908 73rd St',1);
-INSERT INTO firestations(address,station) VALUES ('112 Steppes Pl',4);
-INSERT INTO firestations(address,station) VALUES ('947 E. Rose Dr',1);
-INSERT INTO firestations(address,station) VALUES ('951 LoneTree Rd',2);
+INSERT INTO firestations(address,station_number) VALUES ('1509 Culver St',3);
+INSERT INTO firestations(address,station_number) VALUES ('29 15th St',2);
+INSERT INTO firestations(address,station_number) VALUES ('834 Binoc Ave',3);
+INSERT INTO firestations(address,station_number) VALUES ('644 Gershwin Cir',1);
+INSERT INTO firestations(address,station_number) VALUES ('748 Townings Dr',3);
+INSERT INTO firestations(address,station_number) VALUES ('489 Manchester St',4);
+INSERT INTO firestations(address,station_number) VALUES ('892 Downing Ct',2);
+INSERT INTO firestations(address,station_number) VALUES ('908 73rd St',1);
+INSERT INTO firestations(address,station_number) VALUES ('112 Steppes Pl',4);
+INSERT INTO firestations(address,station_number) VALUES ('947 E. Rose Dr',1);
+INSERT INTO firestations(address,station_number) VALUES ('951 LoneTree Rd',2);
 
 
 

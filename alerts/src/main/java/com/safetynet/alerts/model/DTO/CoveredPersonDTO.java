@@ -19,11 +19,11 @@ public class CoveredPersonDTO {
 	@JsonIgnore
 	private int id;
 	
-	private int station;
+	private int stationNumber;
 	
 	private int adults;
 	
-	private int childs;
+	private int children;
 	
 	private ArrayList<CoveredPerson> coveredPersons;
 

@@ -1,6 +1,9 @@
 package com.safetynet.alerts.service;
 
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import lombok.Data;
 @Data
 @Service
 public class PersonInfoService {
+	
+	private static Logger logger = LogManager.getLogger(PersonInfoService.class);
 	
 	@Autowired
 	PersonService personService;
@@ -52,7 +57,9 @@ public class PersonInfoService {
 			}
 		}
 		
-		return personInfo;
+		logger.info("Response - Person infos for " + firstname + " " 
+				+ lastname + ": " + personInfo);
+    	return personInfo;
 	}
 
 }

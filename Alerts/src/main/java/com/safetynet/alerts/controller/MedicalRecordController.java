@@ -3,6 +3,8 @@ package com.safetynet.alerts.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import com.safetynet.alerts.service.MedicalRecordService;
 @RestController
 public class MedicalRecordController {
 	
+	private static Logger logger = LogManager.getLogger(MedicalRecordController.class);
+	
 	@Autowired
 	MedicalRecordService medicalRecordService;
 	
@@ -28,17 +32,8 @@ public class MedicalRecordController {
 	  */
 	@GetMapping("/medicalrecords")
 	public List<MedicalRecord> getMedicalRecords() {
+        logger.info("Request - Get all medicalRecords");
 		return (List<MedicalRecord>) medicalRecordService.getMedicalRecords();
-	}
-	
-	/*
-	 * Delete a meical record
-	 * @param - firstname, lastname
-	 */
-	@DeleteMapping("/medicalrecord")
-	public void deleteMedicalRecordn(@RequestParam("firstname") final String firstname,
-			@RequestParam("lastname") final String lastname) {
-		medicalRecordService.deleteMedicalRecord(firstname, lastname);
 	}
 	
 	/*
@@ -48,6 +43,7 @@ public class MedicalRecordController {
 	 */
 	@PostMapping("/medicalrecord")
 	public MedicalRecord createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+		logger.info("Request - Create medicalRecord @RequestBody = {} ", medicalRecord);
 		return medicalRecordService.saveMedicalRecord(medicalRecord);
 	}
 	
@@ -61,6 +57,7 @@ public class MedicalRecordController {
 	@PutMapping("/medicalrecord/{id}")
 	public MedicalRecord updateMedicalRecord(@PathVariable("id") final int id, 
 			@RequestBody MedicalRecord medicalRecord) {
+		logger.info("Request update medicalRecord @RequestBody = {} ", medicalRecord);
 		Optional<MedicalRecord> mr = medicalRecordService.getMedicalRecord(id);
 		if(mr.isPresent()) {
 			MedicalRecord currentMedicalRecord = mr.get();
@@ -82,6 +79,17 @@ public class MedicalRecordController {
 		} else {
 			return null;
 		}
+	}
+	
+	/*
+	 * Delete a meical record
+	 * @param - firstname, lastname
+	 */
+	@DeleteMapping("/medicalrecord")
+	public void deleteMedicalRecordn(@RequestParam("firstname") final String firstname,
+			@RequestParam("lastname") final String lastname) {
+		logger.info("Request - Delete medicalRecord with firstname {}, lastname {}", firstname, lastname);
+		medicalRecordService.deleteMedicalRecord(firstname, lastname);
 	}
 
 }

@@ -3,6 +3,8 @@ package com.safetynet.alerts.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import com.safetynet.alerts.service.PersonService;
 @RestController
 public class PersonController {
 	
+	private static Logger logger = LogManager.getLogger(PersonController.class);
+	
 	@Autowired
 	PersonService personService;
 	
@@ -28,17 +32,9 @@ public class PersonController {
 	 */
 	@GetMapping("/persons")
 	public List<Person> getPersons() {
-		return (List<Person>) personService.getPersons();
-	}
-	
-	/*
-	 * Delete a person by combination firstname/lastname
-	 * @param - firstname, lastname
-	 */
-	@DeleteMapping("/person")
-	public void deletePerson(@RequestParam("firstname") final String firstname,
-						@RequestParam("lastname") final String lastname) {
-		personService.deletePerson(firstname, lastname);
+        logger.info("Request - Get all persons");
+		List<Person> persons = personService.getPersons();
+		return persons;
 	}
 	
 	/*
@@ -48,6 +44,7 @@ public class PersonController {
 	 */
 	@PostMapping("/person")
 	public Person createPerson(@RequestBody Person person) {
+		logger.info("Request create person @RequestBody = {} ", person);
 		return personService.savePerson(person);
 	}
 	
@@ -61,6 +58,7 @@ public class PersonController {
 	@PutMapping("/person/{id}")
 	public Person updatePerson(@PathVariable("id") final int id, 
 			@RequestBody Person person) {
+		logger.info("Request update person @RequestBody = {} ", person);
 		Optional<Person> p = personService.getPerson(id);
 		if(p.isPresent()) {
 			Person modifiedPerson = p.get();
@@ -90,6 +88,18 @@ public class PersonController {
 		} else {
 			return null;
 		}
+	}
+	
+	/*
+	 * Delete a person by combination firstname/lastname
+	 * @param - firstname, lastname
+	 */
+	@DeleteMapping("/person")
+	public void deletePerson(@RequestParam("firstname") final String firstname,
+						@RequestParam("lastname") final String lastname) {
+        logger.info("Request Delete person firstname {}, lastname {}", firstname, lastname);
+		personService.deletePerson(firstname, lastname);
+        logger.info("Person deleted firstname {}, lastname {}", firstname, lastname);
 	}
 
 }
