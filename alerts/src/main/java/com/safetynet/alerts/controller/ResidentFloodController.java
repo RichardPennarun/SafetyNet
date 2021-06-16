@@ -1,5 +1,6 @@
 package com.safetynet.alerts.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,23 +15,28 @@ import com.safetynet.alerts.service.ResidentFloodService;
 
 @RestController
 public class ResidentFloodController {
-	
+
 	private static Logger logger = LogManager.getLogger(ResidentFloodController.class);
-	
+
 	@Autowired
 	ResidentFloodService residentFloodService;
-	
-	/*
-	 * Get residents by address for a list of firestations by numbers (flood alert)
-	 * @Param - a stationnumber list
-	 * @Return - a list of objets (Resident by address) by station
-	 */
+
+	// Get residents by address for a list of firestation numbers, @Param - a
+	// stationnumber list,
+	// @Return - a list of objets (Resident by address) by station
 	@GetMapping("/flood/stations")
-	public List<ResidentByStationDTO> getResidentByStationNumber(@RequestParam("station") 
-	final String stationNumbers) {
-        logger.info("Request residents for stationNumber {}", stationNumbers);
-		
-		return (List<ResidentByStationDTO>) residentFloodService.getResidentsByStationNumber(stationNumbers);
+	public ArrayList<ResidentByStationDTO> getResidentByStationNumber(
+			@RequestParam("station") final String stationNumbers) {
+		logger.info("Request - Residents for stationNumber " + stationNumbers);
+		ArrayList<ResidentByStationDTO> residents = (ArrayList<ResidentByStationDTO>) residentFloodService
+				.getResidentsByStationNumber(stationNumbers);
+		if (residents == null) {
+			logger.error("Wrong entry:" + stationNumbers);
+		} else {
+			logger.info("Response - Residents at address " + stationNumbers + ": " + residents);
+			return residents;
+		}
+		return null;
 	}
 
 }

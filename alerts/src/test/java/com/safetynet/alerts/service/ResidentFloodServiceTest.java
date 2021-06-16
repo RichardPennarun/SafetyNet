@@ -1,43 +1,63 @@
 package com.safetynet.alerts.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.safetynet.alerts.controller.CoveredPersonController;
+import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.Firestation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.model.PersonInfo;
 import com.safetynet.alerts.model.Resident;
+import com.safetynet.alerts.model.DTO.CoveredPersonDTO;
+import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
 import com.safetynet.alerts.model.DTO.ResidentByStationDTO;
-import com.safetynet.alerts.repository.ResidentRepository;
-import com.safetynet.alerts.repository.DTO.ResidentByStationDTORepository;
+import com.safetynet.alerts.repository.PersonInfoRepository;
+import com.safetynet.alerts.repository.PersonRepository;
 import com.safetynet.alerts.util.Util;
 
-@Service
-public class ResidentFloodService {
-
-	private static Logger logger = LogManager.getLogger(ResidentFloodService.class);
+@SpringBootTest
+public class ResidentFloodServiceTest {
 
 	@Autowired
-	PersonService personService;
+	private ResidentFloodService residentFloodService;
 
 	@Autowired
-	FirestationService firestationService;
-
+	private FirestationService firestationService;
+	
 	@Autowired
-	MedicalRecordService medicalRecordService;
+	private PersonService personService;
+	
+	@Autowired
+	private MedicalRecordService medicalRecordService;
 
-	public ArrayList<ResidentByStationDTO> getResidentsByStationNumber(final String stationNumbers) {
+	@Before
+	private void setUp() {
+		residentFloodService = new ResidentFloodService();
+		firestationService = new FirestationService();
+		personService = new PersonService();
+		medicalRecordService = new MedicalRecordService();
+	}
 
+	@Test
+	public void getResidentsByStationNumberTest() {
 		ArrayList<ResidentByStationDTO> residentsByStation = new ArrayList<>();
 		Util util = new Util();
+		String stationNumbers = "1 2";
 		String address = "";
-
 		Scanner scanner = new Scanner(stationNumbers);
 		ArrayList<Integer> stations = new ArrayList<Integer>();
 		while (scanner.hasNextInt()) {
@@ -82,8 +102,13 @@ public class ResidentFloodService {
 				}
 			}
 		}
-		return residentsByStation;
 
+		ArrayList<ResidentByStationDTO> getResidentsByStation = residentFloodService.getResidentsByStationNumber("1 2");
+		
+		assertThat(getResidentsByStation).isEqualTo(residentsByStation);
+
+		//assertThat(getResidentsAtAddress.getId()).isEqualTo(residentByAddress.getId());
+		//assertThat(getResidentsAtAddress.getResidents()).isEqualTo(residentByAddress.getResidents());
+		//assertThat(getResidentsAtAddress.getStationNumber()).isEqualTo(residentByAddress.getStationNumber());
 	}
-
 }

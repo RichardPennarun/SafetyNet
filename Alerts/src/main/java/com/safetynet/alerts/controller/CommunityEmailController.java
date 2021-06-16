@@ -1,7 +1,7 @@
 package com.safetynet.alerts.controller;
 
-import java.util.List;
 
+import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +19,18 @@ public class CommunityEmailController {
 	@Autowired
 	CommunityEmailService communityEmailService;
 	
-	/*
-	 * Get all Emails for the given city
-	 * @Param -  city name
-	 * @Return - A list of all emails
-	 */
+	// Get all Emails for the given city, @Param - city name, @Return - A list of emails
 	@GetMapping("/communityEmail")
-	public List<String> getEmails(@RequestParam("city") final String  city){
-        logger.info("Request - Residents emails list for city: " + city);
-        List<String> getemails = communityEmailService.getEmails(city);
+	public ArrayList<String> getEmails(@RequestParam("city") final String  city){
+        logger.info("Request - Emails list for city=" + city);
+        ArrayList<String> getemails = communityEmailService.getEmails(city);
         if (getemails.isEmpty()) {
         	logger.error("Wrong entry:" + city);	
+        } else {
+        	logger.info("Response - Emails list for " + city + ": " + getemails);
+        	return getemails;
         }
-        logger.info("Response - Emails list for " + city + ": " + getemails);
-        return getemails;
-        
+		return null;
 	}
 
 }

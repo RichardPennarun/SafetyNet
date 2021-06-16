@@ -11,9 +11,7 @@ import com.safetynet.alerts.model.Child;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonInfo;
 import com.safetynet.alerts.repository.ChildRepository;
-import lombok.Data;
 
-@Data
 @Service
 public class ChildService {
 	
@@ -23,20 +21,14 @@ public class ChildService {
 	PersonService personService;
 
 	@Autowired
-	MedicalRecordService medicalRecordService;
-
-	@Autowired
 	PersonInfoService personInfoService;
 
-	@Autowired
-	ChildRepository childRepository;
-
-	public List<Child> getChildren(String address) {
+	public ArrayList<Child> getChildren(String address) {
 
 		ArrayList<Child> children = new ArrayList<>();
 
 		ArrayList<PersonInfo> personInfos = new ArrayList<PersonInfo>();
-		List<Person> persons = personService.getPersons();
+		ArrayList<Person> persons = personService.getPersons();
 		for (Person p : persons) {
 			personInfos.add(personInfoService.getPersonInfo(p.getFirstName(), p.getLastName()));
 		}
@@ -62,8 +54,6 @@ public class ChildService {
 				}
 			}
 		}
-		logger.info("Response - Children list for address " + address + ":  " + children);
-    	
 		return children;
 	}
 

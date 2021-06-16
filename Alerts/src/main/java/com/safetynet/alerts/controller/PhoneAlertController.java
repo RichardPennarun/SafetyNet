@@ -1,5 +1,6 @@
 package com.safetynet.alerts.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,16 +20,19 @@ public class PhoneAlertController {
 	@Autowired
 	PhoneAlertService phoneAlertService;
 	
-	/*
-	 * Get phones from residents within a firestation zone
-	 * @Param - station number
-	 * @Return - A list of phone number
-	 */
+	// Get phones for a firestation,* @Param - a station number, @Return - A list of phones
 	@GetMapping("/phoneAlert")
-	public List<String> getPhones(@RequestParam("firestation") final int stationNumber) {
-        logger.info("Request phone numbers for station number {}", stationNumber);
-		List<String> phoneNumbers = phoneAlertService.getPhones(stationNumber);
-		return phoneNumbers;
+	public ArrayList<String> getPhones(@RequestParam("firestation") final int stationNumber) {
+        logger.info("Request - Phones for station number {}", stationNumber);
+        ArrayList<String> phoneNumbers = phoneAlertService.getPhones(stationNumber);
+        if (phoneNumbers.isEmpty()) {
+        	logger.error("Wrong entry: stationNumber" + stationNumber);	
+        } else {
+        	logger.info("Response - Emails list for stationNumber" + stationNumber + 
+        			": " + phoneNumbers);
+        	return phoneNumbers;
+        }
+		return null;
 		
 	}
 

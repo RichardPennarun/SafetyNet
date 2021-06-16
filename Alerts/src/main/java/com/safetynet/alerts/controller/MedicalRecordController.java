@@ -1,6 +1,6 @@
 package com.safetynet.alerts.controller;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,69 +26,49 @@ public class MedicalRecordController {
 	@Autowired
 	MedicalRecordService medicalRecordService;
 	
-	 /*
-	  * Get all medical records
-	  * @return - The list of all medical records
-	  */
+	// Get all medicalRecords, returns a list of all medicalRecords
 	@GetMapping("/medicalrecords")
-	public List<MedicalRecord> getMedicalRecords() {
+	public ArrayList<MedicalRecord> getMedicalRecords() {
         logger.info("Request - Get all medicalRecords");
-		return (List<MedicalRecord>) medicalRecordService.getMedicalRecords();
+		 ArrayList<MedicalRecord> medicalRecords = medicalRecordService.getMedicalRecords();
+			logger.info("Response - Returns all medicalRecords: " + medicalRecords);
+			return medicalRecords;
 	}
 	
-	/*
-	 * Save a new meicalRecord
-	 * @param - An object medicalRecord
-	 * @return - The meicalRecord object saved
-	 */
+	// Add a medicalRecord, @param an object medicalRecord, @return - The medicalRecord object added
 	@PostMapping("/medicalrecord")
 	public MedicalRecord createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 		logger.info("Request - Create medicalRecord @RequestBody = {} ", medicalRecord);
-		return medicalRecordService.saveMedicalRecord(medicalRecord);
-	}
-	
-	/*
-	 * Update existing medicalRecord
-	 * @param  - id
-	 * @param - The medicalRecord with modifications
-	 * firstname/lastname can't be modified
-	 * @return - The modified medicalRecord
-	 */
-	@PutMapping("/medicalrecord/{id}")
-	public MedicalRecord updateMedicalRecord(@PathVariable("id") final int id, 
-			@RequestBody MedicalRecord medicalRecord) {
-		logger.info("Request update medicalRecord @RequestBody = {} ", medicalRecord);
-		Optional<MedicalRecord> mr = medicalRecordService.getMedicalRecord(id);
-		if(mr.isPresent()) {
-			MedicalRecord currentMedicalRecord = mr.get();
-			
-			String birthdate = medicalRecord.getBirthdate();
-			if(birthdate != null) {
-				currentMedicalRecord.setBirthdate(birthdate);
-			}
-			String medications = medicalRecord.getMedications();
-			if(medications != null) {
-				currentMedicalRecord.setMedications(medications);
-			}
-			String allergies = medicalRecord.getAllergies();
-			if(allergies != null) {
-				currentMedicalRecord.setAllergies(allergies);
-			}
-			medicalRecordService.saveMedicalRecord(currentMedicalRecord);
-			return currentMedicalRecord;
-		} else {
+		MedicalRecord createdMedicalRecord = medicalRecordService.saveMedicalRecord(medicalRecord);
+		if (createdMedicalRecord == null) {
+			logger.error("Wrong entry, missing some arguments:" + medicalRecord);
 			return null;
+		} else {
+			logger.info("Response - medicalRecord saved: " + createdMedicalRecord);
+			return createdMedicalRecord;
 		}
 	}
 	
-	/*
-	 * Delete a meical record
-	 * @param - firstname, lastname
-	 */
+	// Update existing medicalRecord, @param the modified medicalRecord (firstname/lastname can't be modified)
+	// @return the updated medicalRecord
+	@PutMapping("/medicalrecord")
+	public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+		logger.info("Request - Update medicalRecord @RequestBody = {} ", medicalRecord);
+		MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecord);
+		if(updatedMedicalRecord == null) {
+			logger.error("Wrong entry, missing some arguments:" + medicalRecord);
+			return null;
+		} else {
+			logger.info("Response - medicalRecord updated: " + updatedMedicalRecord);
+			return updatedMedicalRecord;
+		}
+	}
+	
+	// Delete a medicalRecord by combination firstname/lastname, @param firstname/lastname
 	@DeleteMapping("/medicalrecord")
-	public void deleteMedicalRecordn(@RequestParam("firstname") final String firstname,
+	public void deleteMedicalRecord(@RequestParam("firstname") final String firstname,
 			@RequestParam("lastname") final String lastname) {
-		logger.info("Request - Delete medicalRecord with firstname {}, lastname {}", firstname, lastname);
+		logger.info("Request - Delete medical record with firstname {}, lastname {}", firstname, lastname);
 		medicalRecordService.deleteMedicalRecord(firstname, lastname);
 	}
 

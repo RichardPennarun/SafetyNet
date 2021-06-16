@@ -1,5 +1,6 @@
 package com.safetynet.alerts.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,9 +14,6 @@ import com.safetynet.alerts.model.PersonInfo;
 import com.safetynet.alerts.repository.PersonInfoRepository;
 import com.safetynet.alerts.util.Util;
 
-import lombok.Data;
-
-@Data
 @Service
 public class PersonInfoService {
 	
@@ -27,9 +25,6 @@ public class PersonInfoService {
 	@Autowired
 	MedicalRecordService medicalRecordService;
 	
-	@Autowired
-	private PersonInfoRepository personInfoRepository;
-
 	Util util;
 	
 	public PersonInfo getPersonInfo(final String firstname, final String lastname) {
@@ -37,18 +32,22 @@ public class PersonInfoService {
 		PersonInfo personInfo = new PersonInfo();
 		Util util = new Util();
 		
-		List<Person> persons = personService.getPersons();
+		ArrayList<Person> persons = personService.getPersons();
+		logger.debug("Get all persons");
 		for (Person p : persons) {
 			if(p.getFirstName().equals(firstname) && p.getLastName().equals(lastname)) {
 				personInfo.setId(p.getId());
 				personInfo.setFirstName(p.getFirstName());
 				personInfo.setLastName(p.getLastName());
 				personInfo.setAddress(p.getAddress());
+				personInfo.setCity(p.getCity());
+				personInfo.setZip(p.getZip());
 				personInfo.setEmail(p.getEmail());
 			}
 		}
 		
-		List<MedicalRecord> medicalRecords = medicalRecordService.getMedicalRecords();
+		ArrayList<MedicalRecord> medicalRecords = medicalRecordService.getMedicalRecords();
+		logger.debug("Get all medicalRecords");
 		for (MedicalRecord mr : medicalRecords) {
 			if(mr.getFirstName().equals(firstname) && mr.getLastName().equals(lastname)) {
 				personInfo.setAge(util.getAge(mr.getBirthdate()));
@@ -56,9 +55,6 @@ public class PersonInfoService {
 				personInfo.setAllergies(mr.getAllergies());
 			}
 		}
-		
-		logger.info("Response - Person infos for " + firstname + " " 
-				+ lastname + ": " + personInfo);
     	return personInfo;
 	}
 

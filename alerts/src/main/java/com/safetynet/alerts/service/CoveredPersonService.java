@@ -13,13 +13,11 @@ import com.safetynet.alerts.model.Firestation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.DTO.CoveredPersonDTO;
+import com.safetynet.alerts.repository.ChildRepository;
 import com.safetynet.alerts.repository.CoveredPersonRepository;
 import com.safetynet.alerts.repository.DTO.CoveredPersonDTORepository;
 import com.safetynet.alerts.util.Util;
 
-import lombok.Data;
-
-@Data
 @Service
 public class CoveredPersonService {
 	
@@ -34,48 +32,39 @@ public class CoveredPersonService {
 	@Autowired
 	MedicalRecordService medicalRecordService;
 
-	@Autowired
-	private CoveredPersonDTORepository coveredPersonDTORepository;
-
-	@Autowired
-	private CoveredPersonRepository coveredPersonRepository;
-
-	Util util;
-
 	public CoveredPersonDTO getCoveredPersons(final int stationNumber) {
 
 		CoveredPersonDTO coveredPersonDTO = new CoveredPersonDTO();
 		int adultcount = 0;
 		int childcount = 0;
-		String address = "";
 		Util util = new Util();
-
-		List<Firestation> firestations = firestationService.getFirestations();
 		ArrayList<CoveredPerson> coveredPersons = new ArrayList<>();
+
+		ArrayList<Firestation> firestations = firestationService.getFirestations();
 		for (Firestation fs : firestations) {
 			if (fs.getStationNumber().equals(stationNumber)) {
-				address = fs.getAddress();
-
-				List<Person> persons = personService.getPersons();
+				ArrayList<Person> persons = personService.getPersons();
 				for (Person p : persons) {
-					CoveredPerson coveredPerson = new CoveredPerson();
-					if (p.getAddress().equals(address)) {
+					if (p.getAddress().equals(fs.getAddress())) {
+						CoveredPerson coveredPerson = new CoveredPerson();
 						coveredPerson.setId(p.getId());
 						coveredPerson.setFirstName(p.getFirstName());
 						coveredPerson.setLastName(p.getLastName());
 						coveredPerson.setAddress(p.getAddress());
 						coveredPerson.setCity(p.getCity());
+						coveredPerson.setZip(p.getZip());
 						coveredPerson.setPhone(p.getPhone());
-
-						List<MedicalRecord> medicalrecords = medicalRecordService.getMedicalRecords();
+						ArrayList<MedicalRecord> medicalrecords = medicalRecordService.getMedicalRecords();
 						for (MedicalRecord mr : medicalrecords) {
-							if (mr.getFirstName().equals(coveredPerson.getFirstName())
-									&& mr.getLastName().equals(coveredPerson.getLastName())) {
+							if (mr.getFirstName().equals(p.getFirstName())
+									&& mr.getLastName().equals(p.getLastName())) {
 								coveredPerson.setAge(util.getAge(mr.getBirthdate()));
 
 								if (util.getAge(mr.getBirthdate()) > 18) {
+									logger.debug("Add an adult to counter");
 									adultcount++;
 								} else {
+									logger.debug("Add a child to counter");
 									childcount++;
 								}
 							}
@@ -83,16 +72,12 @@ public class CoveredPersonService {
 						coveredPersons.add(coveredPerson);
 					}
 				}
-
 			}
-
 			coveredPersonDTO.setStationNumber(stationNumber);
 			coveredPersonDTO.setCoveredPersons(coveredPersons);
 			coveredPersonDTO.setAdults(adultcount);
 			coveredPersonDTO.setChildren(childcount);
 		}
-		logger.info("Response - Persons covered by station number " + stationNumber + ": " + coveredPersonDTO);
-    	
 		return coveredPersonDTO;
 	}
 

@@ -1,45 +1,46 @@
 package com.safetynet.alerts.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.safetynet.alerts.model.Firestation;
+import org.springframework.boot.test.context.SpringBootTest;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.Resident;
 import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
-import com.safetynet.alerts.repository.ResidentRepository;
-import com.safetynet.alerts.repository.DTO.ResidentByAddressDTORepository;
 import com.safetynet.alerts.util.Util;
 
-@Service
-public class ResidentFireService {
+@SpringBootTest
+public class ResidentFireServiceTest {
+
+	@Autowired
+	private ResidentFireService residentFireService;
 	
-	private static Logger logger = LogManager.getLogger(ResidentFireService.class);
-
 	@Autowired
-	PersonService personService;
-
+	private PersonService personService;
+	
 	@Autowired
-	FirestationService firestationService;
+	private MedicalRecordService medicalRecordService;
 
-	@Autowired
-	MedicalRecordService medicalRecordService;
+	@Before
+	private void setUp() {
+		residentFireService = new ResidentFireService();
+		personService = new PersonService();
+		medicalRecordService = new MedicalRecordService();
+	}
 
-	public ResidentByAddressDTO getResidentByAdress(final String address) {
-
+	@Test
+	public void getResidentByAdressTest() {
 		ResidentByAddressDTO residentByAddress = new ResidentByAddressDTO();
 		ArrayList<Resident> residents = new ArrayList<>();
 		Util util = new Util();
 
 		ArrayList<Person> persons = personService.getPersons();
 		for (Person p : persons) {
-			if (p.getAddress().equals(address)) {
+			if (p.getAddress().equals("1509 Culver St")) {
 				Resident resident = new Resident();
 				int id = p.getId();
 				resident.setId(id);
@@ -60,14 +61,15 @@ public class ResidentFireService {
 			}
 		}
 		residentByAddress.setResidents(residents);
+		residentByAddress.setStationNumber(3);
 
-		ArrayList<Firestation> firestations = firestationService.getFirestations();
-		for (Firestation fs : firestations) {
-			if (fs.getAddress().equals(address)) {
-				residentByAddress.setStationNumber(fs.getStationNumber());
-			}
-		}
-		return residentByAddress;
+		//when(residentFireService.getResidentByAdress("1509 Culver St")).thenReturn(residentByAddress);
+		ResidentByAddressDTO getResidentsAtAddress = residentFireService.getResidentByAdress("1509 Culver St");
+
+		assertThat(getResidentsAtAddress).isEqualTo(residentByAddress);
+
+		//assertThat(getResidentsAtAddress.getId()).isEqualTo(residentByAddress.getId());
+		//assertThat(getResidentsAtAddress.getResidents()).isEqualTo(residentByAddress.getResidents());
+		//assertThat(getResidentsAtAddress.getStationNumber()).isEqualTo(residentByAddress.getStationNumber());
 	}
-
 }

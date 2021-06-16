@@ -1,5 +1,6 @@
 package com.safetynet.alerts.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,16 +21,18 @@ public class ChildController {
 	@Autowired
 	ChildService childService;
 	
-	/*
-	 * Get children at address
-	 * @Param - an address String
-	 * @Retrun - a list of children objects
-	 */
+	// Get children at address, @Param - an address String, @Retrun - a list of children objects
 	@GetMapping("/childAlert")
-	public List<Child> getChildrenAtAddress(@RequestParam("address") final String address) {
-        logger.info("Request children at address {}", address);
+	public ArrayList<Child> getChildrenAtAddress(@RequestParam("address") final String address) {
+        logger.info("Request - Children at address: " + address);
 		
-		return (List<Child>) childService.getChildren(address);
-		
+		ArrayList<Child> children = childService.getChildren(address);
+		if (children == null) {
+        	logger.info("No child at address: " + address);	
+        } else {
+        	logger.info("Response - Children at address " + address + ": " + children);
+        	return children;
+        }
+		return null;
 	}
 }

@@ -18,17 +18,20 @@ public class ResidentFireController {
 	@Autowired
 	ResidentFireService residentFireService;
 	
-	/*
-	 * Get residents at a given address (fire alert)
-	 * @Param - an address String
-	 * @Return - a list of Resident object and a firestation object
-	 */
+	// Get residents at a given address (fire alert), @Param - an address String
+	// @Return - a list of Resident object, and a firestation object
 	@GetMapping("/fire")
 	public ResidentByAddressDTO getResidentByAddress(@RequestParam("address") 
 			final String address) {
-        logger.info("Request residents at adddress {}", address);
-		
-		return residentFireService.getResidentByAdress(address);
+        logger.info("Request - Residents at adddress" + address);
+        ResidentByAddressDTO residents = residentFireService.getResidentByAdress(address);
+        if (residents == null) {
+        	logger.error("Wrong entry:" + address);	
+        } else {
+        	logger.info("Response - Residents at address " + address + ": " + residents);
+        	return residents;
+        }
+		return null;
 	}
 
 }
