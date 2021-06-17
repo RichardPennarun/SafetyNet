@@ -21,18 +21,21 @@ public class FirestationService {
 
 	// GET a firestation by id
 	public Optional<Firestation> getFirestation(final int id) {
+		logger.debug("Get a firestation by its id: " + id);
 		return firestationRepository.findById(id);
 	}
 
 	// GET all firestations
 	public ArrayList<Firestation> getFirestations() {
 		ArrayList<Firestation> firestations = (ArrayList<Firestation>) firestationRepository.findAll();
+		logger.debug("firestationnRepository.findAll()");
 		return firestations;
 	}
 
 	// POST a firestation
 	public Firestation saveFirestation(Firestation firestation) {
 		Firestation savedFirestation = firestationRepository.save(firestation);
+		logger.debug("Save firestation: " + firestation);
 		return savedFirestation;
 	}
 
@@ -43,12 +46,12 @@ public class FirestationService {
 		for (Firestation fs : firestations) {
 			if (fs.getAddress().equals(firestation.getAddress())) {
 				id = fs.getId();
+				logger.debug("Find the firestation to update");
 			}
 		}
 		Optional<Firestation> firestationToUpdate = getFirestation(id);
 		if (firestationToUpdate.isPresent()) {
 			Firestation modifiedFirestation = firestationToUpdate.get();
-			// firstName and lastName non modifiable
 			String address = firestation.getAddress();
 			if (address != null) {
 				modifiedFirestation.setAddress(address);
@@ -58,6 +61,7 @@ public class FirestationService {
 				modifiedFirestation.setStationNumber(stationNumber);
 			}
 			saveFirestation(modifiedFirestation);
+			logger.debug("Save the updated firestation");
 			return modifiedFirestation;
 		} else {
 			return null;

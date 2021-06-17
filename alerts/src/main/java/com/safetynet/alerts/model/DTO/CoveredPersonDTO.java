@@ -7,7 +7,6 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.safetynet.alerts.model.CoveredPerson;
-import com.safetynet.alerts.model.Resident;
 
 @Entity
 public class CoveredPersonDTO {

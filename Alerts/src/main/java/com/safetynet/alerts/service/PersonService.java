@@ -22,18 +22,21 @@ public class PersonService {
 
 	// GET a person by id
 	public Optional<Person> getPerson(final int id) {
+		logger.debug("Get a person by its id: " + id);
 		return personRepository.findById(id);
 	}
 
 	// GET all persons
 	public ArrayList<Person> getPersons() {
 		ArrayList<Person> persons = (ArrayList<Person>) personRepository.findAll();
+		logger.debug("personRepository.findAll()");
 		return persons;
 	}
 
 	// POST a person
 	public Person savePerson(Person person) {
 		Person savedPerson = personRepository.save(person);
+		logger.debug("Save person: " + person);
 		return savedPerson;
 	}
 
@@ -44,6 +47,7 @@ public class PersonService {
 		for (Person p : persons) {
 			if (p.getFirstName().equals(person.getFirstName()) && p.getLastName().equals(person.getLastName())) {
 				id = p.getId();
+				logger.debug("Find the person to update");
 			}
 		}
 		Optional<Person> personToUpdate = getPerson(id);
@@ -71,6 +75,7 @@ public class PersonService {
 				modifiedPerson.setEmail(email);
 			}
 			savePerson(modifiedPerson);
+			logger.debug("Save the updated person");
 			return modifiedPerson;
 		} else {
 			return null;

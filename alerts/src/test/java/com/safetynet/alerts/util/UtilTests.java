@@ -17,7 +17,6 @@ public class UtilTests {
 	private static void setUp() {
 		util = new Util();
 	}
-
 	
 	@BeforeEach
 	private void setUpPerTest() {
@@ -36,7 +35,7 @@ public class UtilTests {
 	
 	@Test
 	public void getAgeAt20() { // Check the day you're running this test
-		assertThat(util.getAge("06/04/2001")).isEqualTo(20);
+		assertThat(util.getAge("06/17/2001")).isEqualTo(20);
 	}
 
 }

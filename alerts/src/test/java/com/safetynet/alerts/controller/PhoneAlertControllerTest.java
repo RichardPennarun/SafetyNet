@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import org.junit.Before;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.safetynet.alerts.model.Firestation;
 import com.safetynet.alerts.model.Person;
-import com.safetynet.alerts.service.CommunityEmailService;
 import com.safetynet.alerts.service.FirestationService;
 import com.safetynet.alerts.service.PersonService;
 import com.safetynet.alerts.service.PhoneAlertService;

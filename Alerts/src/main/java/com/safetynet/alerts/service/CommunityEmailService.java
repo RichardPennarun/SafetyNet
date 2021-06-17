@@ -20,7 +20,6 @@ public class CommunityEmailService {
 		
 		ArrayList<String> personEmails = new ArrayList<>();
 
-		logger.debug("Get all persons");
 		ArrayList<Person> persons = (ArrayList<Person>) personService.getPersons();
 		for (Person person : persons) {
 			if(person.getCity().equalsIgnoreCase(city)) {

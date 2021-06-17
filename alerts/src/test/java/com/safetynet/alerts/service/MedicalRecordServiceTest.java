@@ -1,28 +1,17 @@
 package com.safetynet.alerts.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.model.Person;
-import com.safetynet.alerts.repository.MedicalRecordRepository;
 
 @SpringBootTest
 public class MedicalRecordServiceTest {
-
-	@Autowired
-	private MedicalRecordRepository medicalRecordRepository;
 	
 	@Autowired
 	private MedicalRecordService medicalRecordService;

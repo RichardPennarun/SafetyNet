@@ -25,7 +25,7 @@ public class CommunityEmailController {
         logger.info("Request - Emails list for city=" + city);
         ArrayList<String> getemails = communityEmailService.getEmails(city);
         if (getemails.isEmpty()) {
-        	logger.error("Wrong entry:" + city);	
+        	logger.error("Wrong entry: city " + city);	
         } else {
         	logger.info("Response - Emails list for " + city + ": " + getemails);
         	return getemails;

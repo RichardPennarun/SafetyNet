@@ -1,8 +1,6 @@
 package com.safetynet.alerts.service;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.Resident;
 import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
-import com.safetynet.alerts.repository.ResidentRepository;
-import com.safetynet.alerts.repository.DTO.ResidentByAddressDTORepository;
 import com.safetynet.alerts.util.Util;
 
 @Service
@@ -41,6 +37,7 @@ public class ResidentFireService {
 		for (Person p : persons) {
 			if (p.getAddress().equals(address)) {
 				Resident resident = new Resident();
+				logger.debug("Get infos about resident in model Person");
 				int id = p.getId();
 				resident.setId(id);
 				resident.setFirstName(p.getFirstName());
@@ -51,19 +48,23 @@ public class ResidentFireService {
 				for (MedicalRecord mr : medicalrecords) {
 					if (mr.getFirstName().equals(resident.getFirstName())
 							&& mr.getLastName().equals(resident.getLastName())) {
+						logger.debug("Get infos about resident in model MedicalRecord");
 						resident.setAge(util.getAge(mr.getBirthdate()));
 						resident.setMedications(mr.getMedications());
 						resident.setAllergies(mr.getAllergies());
 					}
 				}
 				residents.add(resident);
+				logger.debug("Add resident to list");
 			}
 		}
 		residentByAddress.setResidents(residents);
+		logger.debug("Add list of residents to DTO");
 
 		ArrayList<Firestation> firestations = firestationService.getFirestations();
 		for (Firestation fs : firestations) {
 			if (fs.getAddress().equals(address)) {
+				logger.debug("Get firestation number");
 				residentByAddress.setStationNumber(fs.getStationNumber());
 			}
 		}

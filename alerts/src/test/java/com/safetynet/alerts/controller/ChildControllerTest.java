@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,22 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.safetynet.alerts.model.Child;
-import com.safetynet.alerts.model.CoveredPerson;
-import com.safetynet.alerts.model.Firestation;
-import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonInfo;
-import com.safetynet.alerts.model.Resident;
-import com.safetynet.alerts.model.DTO.CoveredPersonDTO;
-import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
 import com.safetynet.alerts.service.ChildService;
-import com.safetynet.alerts.service.CoveredPersonService;
-import com.safetynet.alerts.service.FirestationService;
-import com.safetynet.alerts.service.MedicalRecordService;
 import com.safetynet.alerts.service.PersonInfoService;
 import com.safetynet.alerts.service.PersonService;
-import com.safetynet.alerts.service.ResidentFireService;
-import com.safetynet.alerts.util.Util;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)

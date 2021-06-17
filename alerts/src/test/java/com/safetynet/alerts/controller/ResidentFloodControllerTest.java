@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,19 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.Firestation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.Resident;
-import com.safetynet.alerts.model.DTO.CoveredPersonDTO;
-import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
 import com.safetynet.alerts.model.DTO.ResidentByStationDTO;
-import com.safetynet.alerts.service.CoveredPersonService;
 import com.safetynet.alerts.service.FirestationService;
 import com.safetynet.alerts.service.MedicalRecordService;
 import com.safetynet.alerts.service.PersonService;
-import com.safetynet.alerts.service.ResidentFireService;
 import com.safetynet.alerts.service.ResidentFloodService;
 import com.safetynet.alerts.util.Util;
 
@@ -50,6 +44,8 @@ public class ResidentFloodControllerTest {
 
 	@Autowired
 	private FirestationService firestationService;
+	
+	Scanner scanner;
 
 	@Before
 	private void setUp() {
@@ -66,7 +62,7 @@ public class ResidentFloodControllerTest {
 		Util util = new Util();
 		String stationNumbers = "1 2";
 		String address = "";
-		Scanner scanner = new Scanner(stationNumbers);
+		scanner = new Scanner(stationNumbers);
 		ArrayList<Integer> stations = new ArrayList<Integer>();
 		while (scanner.hasNextInt()) {
 			stations.add(scanner.nextInt());

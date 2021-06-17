@@ -25,15 +25,14 @@ public class PhoneAlertService {
 		ArrayList<String> personPhones = new ArrayList<>();
 		ArrayList<String> addressList = new ArrayList<>();
 
-		logger.debug("Get all firestations");
 		ArrayList<Firestation> firestations = firestationService.getFirestations();
 		for (Firestation firestation : firestations) {
 			if (firestation.getStationNumber().equals(stationNumber)) {
+				logger.debug("Get addresses for station number " + stationNumber);
 				addressList.add(firestation.getAddress());
 			}
 		}
 
-		logger.debug("Get all persons");
 		ArrayList<Person> persons = personService.getPersons();
 		for (String address : addressList) {
 			for (Person person : persons) {

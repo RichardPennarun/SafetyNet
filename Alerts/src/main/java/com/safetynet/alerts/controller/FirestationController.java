@@ -63,7 +63,7 @@ public class FirestationController {
 	 // Delete a mapping by its address, @param - address
 	@DeleteMapping("/deleteAddress")
 	public void deleteMappingWithAddress(@RequestParam("address") final String address) {
-		logger.info("Request - Delete mapping for address {}", address);
+		logger.info("Request - Delete mapping for an address {}", address);
 		firestationService.deleteFirestationByAddress(address);
 	}
 	

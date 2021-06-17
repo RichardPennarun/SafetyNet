@@ -1,8 +1,6 @@
 package com.safetynet.alerts.service;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,6 @@ import com.safetynet.alerts.model.Firestation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.DTO.CoveredPersonDTO;
-import com.safetynet.alerts.repository.ChildRepository;
-import com.safetynet.alerts.repository.CoveredPersonRepository;
-import com.safetynet.alerts.repository.DTO.CoveredPersonDTORepository;
 import com.safetynet.alerts.util.Util;
 
 @Service
@@ -47,6 +42,7 @@ public class CoveredPersonService {
 				for (Person p : persons) {
 					if (p.getAddress().equals(fs.getAddress())) {
 						CoveredPerson coveredPerson = new CoveredPerson();
+						logger.debug("Add infos to CoveredPerson");
 						coveredPerson.setId(p.getId());
 						coveredPerson.setFirstName(p.getFirstName());
 						coveredPerson.setLastName(p.getLastName());
@@ -69,10 +65,12 @@ public class CoveredPersonService {
 								}
 							}
 						}
+						logger.debug("Add coveredPerson to list");
 						coveredPersons.add(coveredPerson);
 					}
 				}
 			}
+			logger.debug("Create DTO");
 			coveredPersonDTO.setStationNumber(stationNumber);
 			coveredPersonDTO.setCoveredPersons(coveredPersons);
 			coveredPersonDTO.setAdults(adultcount);

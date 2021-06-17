@@ -1,7 +1,6 @@
 package com.safetynet.alerts.service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,8 +13,6 @@ import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.Resident;
 import com.safetynet.alerts.model.DTO.ResidentByStationDTO;
-import com.safetynet.alerts.repository.ResidentRepository;
-import com.safetynet.alerts.repository.DTO.ResidentByStationDTORepository;
 import com.safetynet.alerts.util.Util;
 
 @Service
@@ -31,6 +28,8 @@ public class ResidentFloodService {
 
 	@Autowired
 	MedicalRecordService medicalRecordService;
+	
+	Scanner scanner;
 
 	public ArrayList<ResidentByStationDTO> getResidentsByStationNumber(final String stationNumbers) {
 
@@ -38,10 +37,11 @@ public class ResidentFloodService {
 		Util util = new Util();
 		String address = "";
 
-		Scanner scanner = new Scanner(stationNumbers);
+		scanner = new Scanner(stationNumbers);
 		ArrayList<Integer> stations = new ArrayList<Integer>();
 		while (scanner.hasNextInt()) {
 			stations.add(scanner.nextInt());
+			logger.debug("Get stationNumbers from String");
 		}
 
 		for (Integer station : stations) {
@@ -50,12 +50,14 @@ public class ResidentFloodService {
 			for (Firestation fs : firestations) {
 				if (fs.getStationNumber().equals(station)) {
 					address = fs.getAddress();
+					logger.debug("Get address from stationNumber");
 					ArrayList<Resident> residents = new ArrayList<>();
 					ResidentByStationDTO residentByStation = new ResidentByStationDTO();
 
 					ArrayList<Person> persons = personService.getPersons();
 					for (Person p : persons) {
 						if (p.getAddress().equals(address)) {
+							logger.debug("Get infos about resident in model Person");
 							Resident resident = new Resident();
 							resident.setId(p.getId());
 							resident.setFirstName(p.getFirstName());
@@ -66,18 +68,21 @@ public class ResidentFloodService {
 							for (MedicalRecord mr : medicalrecords) {
 								if (mr.getFirstName().equals(resident.getFirstName())
 										&& mr.getLastName().equals(resident.getLastName())) {
+									logger.debug("Get infos about resident in model MedicalRecord");
 									resident.setAge(util.getAge(mr.getBirthdate()));
 									resident.setMedications(mr.getMedications());
 									resident.setAllergies(mr.getAllergies());
 								}
 							}
 							residents.add(resident);
+							logger.debug("Add resident to list");
 						}
+						logger.debug("Create a DTO");
 						residentByStation.setResidents(residents);
 						residentByStation.setStationNumber(station);
 						residentByStation.setAddress(address);
 					}
-
+					logger.debug("Add DTO to list");
 					residentsByStation.add(residentByStation);
 				}
 			}

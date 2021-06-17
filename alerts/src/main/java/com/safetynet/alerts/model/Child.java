@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.safetynet.alerts.model.DTO.ResidentByStationDTO;
 
 @Entity
 public class Child {

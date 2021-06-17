@@ -1,35 +1,14 @@
 package com.safetynet.alerts.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import org.junit.Before;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import com.safetynet.alerts.controller.ChildController;
-import com.safetynet.alerts.controller.CoveredPersonController;
 import com.safetynet.alerts.model.Child;
-import com.safetynet.alerts.model.CoveredPerson;
-import com.safetynet.alerts.model.Firestation;
-import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonInfo;
-import com.safetynet.alerts.model.Resident;
-import com.safetynet.alerts.model.DTO.CoveredPersonDTO;
-import com.safetynet.alerts.model.DTO.ResidentByAddressDTO;
-import com.safetynet.alerts.model.DTO.ResidentByStationDTO;
-import com.safetynet.alerts.repository.PersonInfoRepository;
-import com.safetynet.alerts.repository.PersonRepository;
-import com.safetynet.alerts.util.Util;
 
 @SpringBootTest
 public class ChildServiceTest {

@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.safetynet.alerts.model.DTO.ResidentByStationDTO;
-
 @Entity
 @Table(name = "medicalrecords")
 public class MedicalRecord {
